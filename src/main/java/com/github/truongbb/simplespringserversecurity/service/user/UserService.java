@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> search(UserVm userVm);
+  List<User> search(UserVm userVm);
 
-    User getUserInfo();
+  User getUserInfo();
 
 }

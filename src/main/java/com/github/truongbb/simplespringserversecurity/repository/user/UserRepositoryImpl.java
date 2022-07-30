@@ -13,8 +13,8 @@ import java.util.List;
 @Slf4j
 public class UserRepositoryImpl extends BaseRepository implements UserRepository {
 
-    @Override
-    public List<UserDto> findByUsernameOrEmailOrPhone(String searchField, String value) {
+  @Override
+  public List<UserDto> findByUsernameOrEmailOrPhone(String searchField, String value) {
 //        List<UserDto> userDtos = null;
 //
 //        try {
@@ -35,17 +35,17 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
 //            log.error(e.getMessage(), e);
 //        }
 //        return userDtos;
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public boolean updateUserEntity(User usersEntity) {
-        User merge = getEntityManager().merge(usersEntity);
-        return merge != null;
-    }
+  @Override
+  public boolean updateUserEntity(User usersEntity) {
+    User merge = getEntityManager().merge(usersEntity);
+    return merge != null;
+  }
 
-    @Override
-    public List<User> search(UserVm userVm) {
-        return null;
-    }
+  @Override
+  public List<User> search(UserVm userVm) {
+    return null;
+  }
 }

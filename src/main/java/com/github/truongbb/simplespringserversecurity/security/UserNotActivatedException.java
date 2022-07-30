@@ -7,5 +7,5 @@ public class UserNotActivatedException extends AuthenticationException {
   public UserNotActivatedException(String msg) {
     super(msg);
   }
-    
+
 }

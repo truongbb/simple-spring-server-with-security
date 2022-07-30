@@ -17,13 +17,13 @@ import java.io.Serializable;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_SEQ")
-    @SequenceGenerator(name = "ROLE_SEQ", sequenceName = "ROLE_SEQ", allocationSize = 1)
-    @Column(name = "id", nullable = false)
-    Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_SEQ")
+  @SequenceGenerator(name = "ROLE_SEQ", sequenceName = "ROLE_SEQ", allocationSize = 1)
+  @Column(nullable = false)
+  Long id;
 
-    @Column
-    String name;
+  @Column
+  String name;
 
 }

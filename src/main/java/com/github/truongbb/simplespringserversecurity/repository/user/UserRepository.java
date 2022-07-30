@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface UserRepository {
 
-    /**
-     * @param searchField is one of "email", "username", "phone"
-     * @param value       is search value for corresponding search field
-     * @return List<UserDto>
-     */
-    List<UserDto> findByUsernameOrEmailOrPhone(String searchField, String value);
+  /**
+   * @param searchField is one of "email", "username", "phone"
+   * @param value       is search value for corresponding search field
+   * @return List<UserDto>
+   */
+  List<UserDto> findByUsernameOrEmailOrPhone(String searchField, String value);
 
-    boolean updateUserEntity(User usersEntity);
+  boolean updateUserEntity(User usersEntity);
 
-    List<User> search(UserVm userVm);
+  List<User> search(UserVm userVm);
 
 }

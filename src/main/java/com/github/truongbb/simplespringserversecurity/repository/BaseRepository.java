@@ -17,16 +17,16 @@ import javax.persistence.PersistenceContext;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class BaseRepository {
 
-    @PersistenceContext
-    EntityManager entityManager;
+  @PersistenceContext
+  EntityManager entityManager;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+  @Autowired
+  JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+  @Autowired
+  NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    protected Session getSession() {
-        return entityManager.unwrap(Session.class);
-    }
+  protected Session getSession() {
+    return entityManager.unwrap(Session.class);
+  }
 }

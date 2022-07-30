@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Collections;
 
 @Slf4j
 @RestController
@@ -29,20 +28,20 @@ import java.util.Collections;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationResource {
 
-    AuthenticationManagerBuilder authenticationManagerBuilder;
+  AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    TokenProvider tokenProvider;
+  TokenProvider tokenProvider;
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<Object> authorize(@Valid @RequestBody UserVm userVm) {
-        log.trace("REST request to authenticate user: {}", userVm);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userVm.getEmail(), userVm.getPassword());
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication, userVm.getRememberMe());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, String.format("Bearer %s", jwt));
-        return new ResponseEntity<>(Collections.singletonMap("token", jwt), httpHeaders, HttpStatus.OK);
-    }
+  @PostMapping("/authenticate")
+  public ResponseEntity<Object> authorize(@Valid @RequestBody UserVm userVm) {
+    log.trace("REST request to authenticate user: {}", userVm);
+    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userVm.getEmail(), userVm.getPassword());
+    Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = tokenProvider.createToken(authentication, userVm.getRememberMe());
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, String.format("Bearer %s", jwt));
+    return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+  }
 
 }

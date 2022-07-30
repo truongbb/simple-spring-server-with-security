@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider implements InitializingBean {
 
-  private Logger log = LoggerFactory.getLogger(TokenProvider.class);
+  private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
   private static final String AUTHORITIES_KEY = "auth";
 
@@ -45,10 +46,10 @@ public class TokenProvider implements InitializingBean {
     this.key = Keys.hmacShaKeyFor(keyBytes);
   }
 
-  public String createToken(Authentication authentication, boolean rememberMe) {
+  public String createToken(Authentication authentication, Boolean rememberMe) {
     String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
     long now = Calendar.getInstance().getTimeInMillis();
-    Date expiredTime = new Date((rememberMe ? tokenValidityInSecondsForRememberMe : tokenValidityInMilliseconds) + now);
+    Date expiredTime = new Date((!ObjectUtils.isEmpty(rememberMe) && rememberMe ? tokenValidityInSecondsForRememberMe : tokenValidityInMilliseconds) + now);
 
     return Jwts.builder().setSubject(authentication.getName()).claim(AUTHORITIES_KEY, authorities)
       .signWith(this.key, SignatureAlgorithm.HS512).setExpiration(expiredTime).compact();

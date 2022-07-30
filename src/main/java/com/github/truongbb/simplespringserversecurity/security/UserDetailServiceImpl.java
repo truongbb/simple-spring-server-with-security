@@ -23,23 +23,33 @@ import java.util.stream.Collectors;
 @Component("userDetailsService")
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    @Autowired
-    UserRepositoryJpa userRepositoryJpa;
+  @Autowired
+  UserRepositoryJpa userRepositoryJpa;
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (new EmailValidator().isValid(username, null)) {
-            return userRepositoryJpa.findByEmail(username).map(user -> createSpringSecurityUser(username, user)).orElseThrow(() -> new UsernameNotFoundException("User with email " + username + " not found in the database"));
-        } else return null;
-    }
+  @Override
+  @Transactional
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    if (new EmailValidator().isValid(username, null)) {
+      return userRepositoryJpa.findByEmail(username)
+        .map(user -> createSpringSecurityUser(username, user))
+        .orElseThrow(
+          () -> new UsernameNotFoundException("User with email " + username + " not found in the database")
+        );
+    } else return null;
+  }
 
-    private org.springframework.security.core.userdetails.User createSpringSecurityUser(String email, User user) {
-        if (!user.getIsActivated()) {
-            throw new UserNotActivatedException("User " + email + " was not activated");
-        }
-        List<GrantedAuthority> grantedAuthorities = user.getRoles().stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+  private org.springframework.security.core.userdetails.User createSpringSecurityUser(String email, User user) {
+    if (!user.getIsActivated()) {
+      throw new UserNotActivatedException("User " + email + " was not activated");
     }
+    List<GrantedAuthority> grantedAuthorities = user.getRoles()
+      .stream()
+      .map(
+        authority ->
+          new SimpleGrantedAuthority(authority.getName())
+      )
+      .collect(Collectors.toList());
+    return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+  }
 
 }

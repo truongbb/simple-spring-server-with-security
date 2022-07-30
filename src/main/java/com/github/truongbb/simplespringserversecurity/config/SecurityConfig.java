@@ -19,48 +19,48 @@ import org.springframework.web.filter.CorsFilter;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    CorsFilter corsFilter;
+  CorsFilter corsFilter;
 
-    TokenProvider tokenProvider;
+  TokenProvider tokenProvider;
 
-    public SecurityConfig(CorsFilter corsFilter, TokenProvider tokenProvider) {
-        this.corsFilter = corsFilter;
-        this.tokenProvider = tokenProvider;
-    }
+  public SecurityConfig(CorsFilter corsFilter, TokenProvider tokenProvider) {
+    this.corsFilter = corsFilter;
+    this.tokenProvider = tokenProvider;
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
-                .disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/swagger-resources/**", "/v2/api-docs").permitAll()
-                .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/demo-api/authenticate").permitAll()
-                .antMatchers("/demo-api/logout").permitAll()
-                .antMatchers("/demo-api/register").permitAll()
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http
+      .csrf()
+      .disable()
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+      .authorizeRequests()
+      .antMatchers("/swagger-resources/**", "/v2/api-docs").permitAll()
+      .antMatchers(HttpMethod.OPTIONS).permitAll()
+      .antMatchers("/demo-api/authenticate").permitAll()
+      .antMatchers("/demo-api/logout").permitAll()
+      .antMatchers("/demo-api/register").permitAll()
 //      .antMatchers("/mate-api/user/**").hasAnyRole(AuthoritiesConstants.ROLE_USER)
-                .antMatchers("/demo-api/**").authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .apply(securityConfigurerAdapter())
-                .and()
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling()
-                .accessDeniedPage("/403");
-    }
+      .antMatchers("/demo-api/**").authenticated()
+      .and()
+      .httpBasic()
+      .and()
+      .apply(securityConfigurerAdapter())
+      .and()
+      .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+      .exceptionHandling()
+      .accessDeniedPage("/403");
+  }
 
-    private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider);
-    }
+  private JWTConfigurer securityConfigurerAdapter() {
+    return new JWTConfigurer(tokenProvider);
+  }
 
 }

@@ -27,6 +27,6 @@ spring:
 application:
   security:
     jwt:
-      secretKey: de6aaeabadeccc598160172044da9c566242ae3b
+      secretKey: de6aaeabadeccc598160172044da9c566242ae3bde6aaeabadeccc598160172044da9c566242ae3b
       tokenValidityMilliseconds: 86400000
       rememberMeTokenValiditySeconds: 25920000000
