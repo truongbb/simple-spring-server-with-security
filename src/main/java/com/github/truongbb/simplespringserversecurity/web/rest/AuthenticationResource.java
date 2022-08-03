@@ -14,15 +14,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @Slf4j
 @RestController
+@CrossOrigin
 @AllArgsConstructor
 @RequestMapping("${spring.data.rest.base-path}")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -41,7 +39,7 @@ public class AuthenticationResource {
     String jwt = tokenProvider.createToken(authentication, userVm.getRememberMe());
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, String.format("Bearer %s", jwt));
-    return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+    return new ResponseEntity<>(jwt, httpHeaders, HttpStatus.OK);
   }
 
 }
